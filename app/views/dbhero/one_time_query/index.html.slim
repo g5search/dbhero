@@ -1,0 +1,11 @@
+.section.bottom-bord.grey.lighten-4
+  .container
+    .row
+      .col.s12.center-align
+        h5.clip-title One Time Query
+
+.container
+  == render 'one_time_query_form'
+
+- if params.dig(:dataclip, :raw_query).present?
+  == render 'clip_table'
