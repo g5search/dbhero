@@ -62,7 +62,17 @@ module Dbhero
         self.errors.add(:base, e.message)
       end
     end
-    
+
+    def query_valid?
+      begin
+        DataclipRead.connection.select_all(self.raw_query)
+        true
+      rescue ActiveRecord::StatementInvalid => e
+        self.errors.add(:base, e.message)
+        false
+      end
+    end
+
     def csv_string
       if one_time_query
         result = otq_result
