@@ -8,6 +8,7 @@ module Dbhero
     def index
       if params.dig(:dataclip, :raw_query).present?
         @dataclip = Dataclip.new(dataclip_query_params.merge(one_time_query: true))
+        @dataclip.otq_result
       else
         @dataclip = Dataclip.new
       end
