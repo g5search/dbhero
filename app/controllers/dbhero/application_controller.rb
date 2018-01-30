@@ -1,9 +1,10 @@
 module Dbhero
   class ApplicationController < ActionController::Base
+
     def check_auth
       if Dbhero.authenticate
-        unless _current_user && call_custom_auth
-          raise ActionController::RoutingError.new('Forbidden')
+        unless _current_user && call_custom_auth && _current_user.has_role?(:super_admin)
+          render status: :forbidden, file: "#{Rails.root}/public/403"
         end
       end
     end
