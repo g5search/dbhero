@@ -3,4 +3,6 @@ Dbhero::Engine.routes.draw do
   resources :dataclips do
     get :drive, on: :collection
   end
+
+  get :one_time_query, to: "one_time_query#index"
 end

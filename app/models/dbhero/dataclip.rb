@@ -9,6 +9,7 @@ module Dbhero
     scope :search, ->(term) { where(arel_table[:description].matches("%#{term}%")) }
 
     validates :description, :raw_query, presence: true
+    attr_accessor :one_time_query
     attr_reader :q_result
 
     def refresh_cache
@@ -33,7 +34,8 @@ module Dbhero
     end
 
     def total_rows
-      @total_rows ||= @q_result.rows.length
+      result = one_time_query ? otq_result : @q_result
+      @total_rows ||= result.rows.length
     end
 
     def cached?
@@ -53,6 +55,14 @@ module Dbhero
       end
     end
 
+    def otq_result
+      begin
+        @otq_result ||= DataclipRead.connection.select_all(self.raw_query)
+      rescue => e
+        self.errors.add(:base, e.message)
+      end
+    end
+
     def query_valid?
       begin
         DataclipRead.connection.select_all(self.raw_query)
@@ -64,10 +74,16 @@ module Dbhero
     end
 
     def csv_string
-      query_result
+      if one_time_query
+        result = otq_result
+      else
+        query_result
+        result = @q_result
+      end
+
       csv_string = CSV.generate(force_quotes: true, col_sep: Dbhero.csv_delimiter) do |csv|
-        csv << @q_result.columns
-        @q_result.rows.each { |row| csv << row }
+        csv << result.columns
+        result.rows.each { |row| csv << row }
       end
       csv_string
     end
