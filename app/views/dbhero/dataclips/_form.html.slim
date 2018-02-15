@@ -12,12 +12,12 @@
 
   .row.style-text-field
     .input-field
-      = f.text_area :description, class: "materialize-textarea", placeholder: "describe this clip, first line should be title..."
+      = f.text_area :description, class: "materialize-textarea", placeholder: "describe this report, first line should be title..."
   .row
     .input-field
       = f.text_area :raw_query, class: 'editor-style z-depth-1'
   .row
-    .col.s9
+    .col.s6
       .input-field
         .switch
           label
@@ -25,6 +25,10 @@
             = f.check_box :private
             span.lever style='float: left;'
             i style="margin-top: -20px; float: left" class="small mdi-action-lock-outline tooltipped" data-position="right" data-delay="50" data-tooltip="Only users that same role as you can see the clip"
+    .col.s3.right-align
+      .input-field
+        - if @dataclip.persisted?
+          = link_to 'Delete Report', dataclip_path(@dataclip), method: :delete, data: { confirm: "Are you sure?" }, class: "btn red"
     .col.s3.right-align
       .input-field
         button class="btn waves-effect waves-light blue darken-3" type="submit" name="action"

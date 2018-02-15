@@ -53,6 +53,16 @@ module Dbhero
       end
     end
 
+    def query_valid?
+      begin
+        DataclipRead.connection.select_all(self.raw_query)
+        true
+      rescue ActiveRecord::StatementInvalid => e
+        self.errors.add(:base, e.message)
+        false
+      end
+    end
+
     def csv_string
       query_result
       csv_string = CSV.generate(force_quotes: true, col_sep: Dbhero.csv_delimiter) do |csv|

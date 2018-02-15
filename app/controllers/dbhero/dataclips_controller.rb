@@ -58,7 +58,10 @@ module Dbhero
     end
 
     def update
-      @dataclip.update(dataclip_params)
+      @dataclip.assign_attributes(dataclip_params)
+      if @dataclip.query_valid?
+        @dataclip.save
+      end
       respond_with @dataclip, location: edit_dataclip_path(@dataclip), notice: 'Dataclip was successfully updated.'
     end
 
