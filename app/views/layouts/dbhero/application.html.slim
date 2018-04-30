@@ -3,8 +3,8 @@ html class="#{html_class}"
   head
     title Integrations Reports
 
-  = stylesheet_link_tag    "dbhero/application", 
-    "//cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/css/materialize.min.css", 
+  = stylesheet_link_tag    "dbhero/application",
+    "//cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/css/materialize.min.css",
     "//cdn.datatables.net/1.10.5/css/jquery.dataTables.min.css",
     media: "all"
 
@@ -19,10 +19,11 @@ html class="#{html_class}"
         li
           = link_to('G5 Integrations Dashboard', '/', style: "font-size: 18px; color: #777;")
         - if current_user_super_admin?
-          li= link_to('Clients', '/', style: "font-size: 14px; color: #777;")
-          li.active= link_to('Admin', '/admin/base_admin', style: "font-size: 14px; color: #777;")
+          li= link_to('Home', '/home', style: "font-size: 14px; color: #777;")
+          li.active= link_to('Docs', '/admin/docs', style: "font-size: 14px; color: #777;")
           li= link_to('Logged In Users', '/admin/logged_in_users', style: "font-size: 14px; color: #777;")
           li= link_to('G5 Ops', '/g5_ops/status.html', target: "_blank", style: "font-size: 14px; color: #777;")
+          li= link_to('Change Logs', '/changelogs', target: "_blank", style: "font-size: 14px; color: #777;")
       ul.right-align
         = link_to("Logout", 'g5_auth/users/sign_out', style: "font-size: 14px; color: #777;")
 
@@ -36,6 +37,6 @@ html class="#{html_class}"
               = link_to 'All Reports', dataclips_path, class: 'btn blue darken-1 waves-effect waves-light'
               |&nbsp;
               = link_to 'New Report', new_dataclip_path, class: 'btn blue darken-1 waves-effect waves-light'
-          
+
     = yield
 
