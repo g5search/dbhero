@@ -12,10 +12,12 @@ module Dbhero
     attr_accessor :one_time_query
     attr_reader :q_result
 
+    INTEGRATIONS_OVERVIEW_DESCRIPTION = "**System** - Integrations Overview"
+    INTEGRATIONS_UBER_DESCRIPTION = "**System** - Integrations Uber"
+
     def refresh_cache
       Rails.cache.delete("dataclip_#{self.token}")
     end
-
 
     def set_token
       self.token = SecureRandom.uuid unless self.token
@@ -86,6 +88,14 @@ module Dbhero
         result.rows.each { |row| csv << row }
       end
       csv_string
+    end
+
+    def self.integrations_overview
+      find_by(description: INTEGRATIONS_OVERVIEW_DESCRIPTION)
+    end
+
+    def self.integrations_uber
+      find_by(description: INTEGRATIONS_UBER_DESCRIPTION)
     end
   end
 end
