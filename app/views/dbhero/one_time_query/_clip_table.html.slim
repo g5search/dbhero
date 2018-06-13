@@ -12,7 +12,7 @@
   
         ul id='export-drop' class='dropdown-content'
           li
-            = link_to 'csv', one_time_query_url(params: params.slice(:dataclip),format: 'csv')
+            = link_to 'csv', one_time_query_url(params: { dataclip: @dataclip_params }, format: 'csv')
           /li
           /  = link_to 'google drive', dataclip_path(@dataclip, export_gdrive: true)
 
@@ -33,4 +33,4 @@
       .col.s12.center-align
         h2.flow-text this clip is too large, please download the csv:
       .col.s12.center-align
-        = link_to "download csv", one_time_query_url(params: params.slice(:dataclip), format: :csv), class: "btn"
+        = link_to "download csv", one_time_query_url(params: { dataclip: @dataclip_params }, format: :csv), class: "btn"
