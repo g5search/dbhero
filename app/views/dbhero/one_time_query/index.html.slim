@@ -7,5 +7,5 @@
 .container
   == render 'one_time_query_form'
 
-- if params.dig(:dataclip, :raw_query).present? && @dataclip&.query_valid?
+- if @dataclip_params.present? && @dataclip&.query_valid?
   == render 'clip_table'

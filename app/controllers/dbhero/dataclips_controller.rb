@@ -39,7 +39,7 @@ module Dbhero
         end
 
         format.csv do
-          send_data @dataclip.csv_string, type: Mime::CSV, disposition: "attachment; filename=#{@dataclip.description} - #{Date.today.to_s}.csv"
+          send_data @dataclip.csv_string, type: "text/csv", disposition: "attachment; filename=#{@dataclip.description} - #{Date.today.to_s}.csv"
         end
       end
     end
