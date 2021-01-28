@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## TBD
+## 1.3.0
 
   - Rails 5 Upgrade updates:
     - Use strong parameters for one_time_query params usage
