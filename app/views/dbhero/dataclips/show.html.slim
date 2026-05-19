@@ -7,12 +7,4 @@
 
 
 .container
-  - if params[:gdrive_file_url].present?
-    .card-panel.teal.up.green.lighten-1
-      .card-content.white-text.center-align style='text-transform: uppercase;'
-        | DATACLIP EXPORTED!&nbsp;
-        strong
-          = link_to 'CLICK HERE TO VIEW IT', params[:gdrive_file_url], style: 'color: #33691e;'
-
-
-== render 'clip_table'
+  == render 'clip_table'

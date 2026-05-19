@@ -1,7 +1,6 @@
 require_dependency "dbhero/application_controller"
 require_dependency "responders"
 require_dependency "has_scope"
-require_dependency "google_drive"
 
 module Dbhero
   class DataclipsController < ApplicationController
@@ -14,16 +13,6 @@ module Dbhero
       @dataclips = apply_scopes(Dataclip.ordered)
     end
 
-    def drive
-      token = session.delete(:clip_token)
-
-      google_client.fetch_access_token!(params[:code])
-      google_client.options[:import_data_url] = dataclip_url(id: token, format: 'csv')
-      google_client.export_clip_by_token token
-
-      redirect_to dataclip_path(google_client.dataclip, gdrive_file_url: google_client.exported_file_url)
-    end
-
     def show
       check_auth if @dataclip.private?
       @dataclip.query_result
@@ -31,11 +20,6 @@ module Dbhero
       respond_to do |format|
         format.html do
           return render :show, layout: false if request.xhr?
-
-          if params[:export_gdrive]
-            session[:clip_token] = @dataclip.token
-            redirect_to google_client.auth.authorization_uri.to_s
-          end
         end
 
         format.csv do
@@ -79,10 +63,6 @@ module Dbhero
       # Only allow a trusted parameter "white list" through.
       def dataclip_params
         params.require(:dataclip).permit(:description, :raw_query, :private)
-      end
-
-      def google_client
-        @g_client ||= Dbhero::GdriveExporter.new(redirect_uri: drive_dataclips_url)
       end
   end
 end

@@ -45,16 +45,16 @@ module Dbhero
     end
 
     def query_result
-      DataclipRead.transaction do
-        begin
-          @q_result ||= Rails.cache.fetch("dataclip_#{self.token}", expires_in: (::Dbhero.cached_query_exp||10.minutes)) do
-            DataclipRead.connection.select_all(self.raw_query)
-          end
-        rescue => e
-          self.errors.add(:base, e.message)
+      DataclipRead.transaction(requires_new: true) do
+        @q_result ||= Rails.cache.fetch("dataclip_#{self.token}", expires_in: (::Dbhero.cached_query_exp || 10.minutes)) do
+          DataclipRead.connection.select_all(self.raw_query)
         end
         raise ActiveRecord::Rollback
       end
+    rescue => e
+      # Catches both errors from select_all and from a failed savepoint rollback
+      # (e.g. when user SQL contains COMMIT/ROLLBACK that ate the savepoint).
+      self.errors.add(:base, e.message)
     end
 
     def otq_result

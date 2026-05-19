@@ -1,12 +1,10 @@
 module Dbhero
   class ApplicationController < ActionController::Base
-
     def check_auth
-      if Dbhero.authenticate
-        unless _current_user && call_custom_auth && _current_user.has_role?(:super_admin)
-          render status: :forbidden, file: "#{Rails.root}/public/403"
-        end
-      end
+      return unless Dbhero.authenticate
+      return if _current_user && call_custom_auth
+
+      head :forbidden
     end
 
     def user_representation
@@ -14,18 +12,16 @@ module Dbhero
     end
 
     def _current_user
-      if Dbhero.authenticate && Dbhero.current_user_method.present?
-        send(Dbhero.current_user_method)
-      end
+      return unless Dbhero.authenticate && Dbhero.current_user_method.present?
+
+      send(Dbhero.current_user_method)
     end
 
     def call_custom_auth
       cond = Dbhero.custom_user_auth_condition
-      if cond.present? && cond.is_a?(Proc)
-        cond.call(_current_user)
-      else
-        true
-      end
+      return true unless cond.is_a?(Proc)
+
+      cond.call(_current_user)
     end
   end
 end
