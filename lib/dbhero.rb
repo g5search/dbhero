@@ -1,3 +1,4 @@
+require "dbhero/version"
 require "dbhero/engine"
 require "dbhero/configuration"
 require "slim"
