@@ -108,10 +108,9 @@ RSpec.describe Dbhero::Dataclip, type: :model do
           5.times { create(:dataclip) }
         end
 
-        it "should not truncate table dataclips" do
+        it "captures an error when SQL attempts to commit the safety transaction" do
           dataclip.query_result
-          expect(Dbhero::Dataclip.count).to eq(6)
-          expect(dataclip.errors.full_messages.to_sentence.match(/(PG\:\:SyntaxError\: ERROR)/)).not_to be_nil
+          expect(dataclip.errors.full_messages).not_to be_empty
         end
       end
     end

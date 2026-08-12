@@ -18,16 +18,17 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files = Dir["spec/**/*"]
 
-  s.add_dependency "rails", ">= 4.1"
+  s.required_ruby_version = ">= 3.4"
+
+  s.add_dependency "rails", ">= 7.2"
   s.add_dependency "responders"
   s.add_dependency "sass-rails"
   s.add_dependency "slim-rails"
-  s.add_dependency "google_drive", "~> 1.0.4"
   s.add_dependency "has_scope"
+  s.add_dependency "csv" # bundled-gem in Ruby 3.4+; required by Dbhero::Dataclip
 
   s.add_development_dependency "pg"
-  s.add_development_dependency 'rspec-rails', '~> 3.0'
-  s.add_development_dependency 'factory_girl_rails'
-  s.add_development_dependency 'codeclimate-test-reporter'
-  s.add_development_dependency 'shoulda'
+  s.add_development_dependency "rspec-rails", "~> 7.0"
+  s.add_development_dependency "factory_bot_rails"
+  s.add_development_dependency "shoulda-matchers"
 end
